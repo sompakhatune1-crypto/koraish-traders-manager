@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">মেসার্স কোরাইশ ট্রেডার্স</string>
+    <string name="title_activity_main">মেসার্স কোরাইশ ট্রেডার্স</string>
+    <string name="package_name">com.messrskoraishtraders.app</string>
+    <string name="custom_url_scheme">com.messrskoraishtraders.app</string>
+</resources>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="128" fill="#020617"/>
+  <circle cx="256" cy="256" r="210" fill="#064e3b" stroke="#f59e0b" stroke-width="8"/>
+  <rect x="140" y="160" width="232" height="200" rx="36" fill="#047857" stroke="#34d399" stroke-width="6"/>
+  <!-- Bag ties -->
+  <path d="M210 160 C210 120, 302 120, 302 160" fill="none" stroke="#f59e0b" stroke-width="14" stroke-linecap="round"/>
+  <!-- Bengali Character কো -->
+  <text x="256" y="295" font-family="'Hind Siliguri', sans-serif" font-size="110" font-weight="900" fill="#f8fafc" text-anchor="middle">কো</text>
+  <text x="256" y="420" font-family="'Hind Siliguri', sans-serif" font-size="34" font-weight="bold" fill="#34d399" text-anchor="middle">কোরাইশ ট্রেডার্স</text>
+</svg>

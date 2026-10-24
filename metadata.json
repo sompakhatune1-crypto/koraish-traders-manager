@@ -1,0 +1,7 @@
+{
+  "name": "মেসার্স কোরাইশ ট্রেডার্স",
+  "description": "প্রিমিয়াম সিমেন্ট ইনভেন্টরি, ব্যবসায়িক হিসাব, বিকাশ লেজার এবং বাংলা ভয়েস অ্যাসিস্ট্যান্ট অ্যান্ড্রয়েড অ্যাপ",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

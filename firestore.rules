@@ -1,0 +1,156 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(ownerId) {
+      return isSignedIn() && request.auth.uid == ownerId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Validation for Business Profile
+    function isValidBusiness(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.businessName is string && data.businessName.size() <= 100 &&
+             (!('phone' in data) || (data.phone is string && data.phone.size() <= 20));
+    }
+
+    // Validation for Cement Product
+    function isValidProduct(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.brandName is string && data.brandName.size() <= 100 &&
+             data.currentStock is number && data.currentStock >= 0;
+    }
+
+    // Validation for Stock Movement
+    function isValidMovement(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.productId is string && data.quantity is number;
+    }
+
+    // Validation for Sale
+    function isValidSale(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.invoiceNumber is string && data.invoiceNumber.size() <= 50 &&
+             data.totalAmount is number && data.paidAmount is number;
+    }
+
+    // Validation for Purchase
+    function isValidPurchase(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.billNumber is string && data.billNumber.size() <= 50 &&
+             data.totalAmount is number;
+    }
+
+    // Validation for Customer
+    function isValidCustomer(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.name is string && data.name.size() <= 100 &&
+             data.phone is string && data.phone.size() <= 20;
+    }
+
+    // Validation for Supplier
+    function isValidSupplier(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.name is string && data.name.size() <= 100;
+    }
+
+    // Validation for bKash
+    function isValidBkash(data) {
+      return data.id is string && data.ownerId == request.auth.uid &&
+             data.amount is number && data.amount > 0 &&
+             data.newBalance is number;
+    }
+
+    // Match businesses
+    match /businesses/{businessId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(businessId) && isValidBusiness(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && isOwner(existing().ownerId) && isValidBusiness(incoming()) && incoming().ownerId == existing().ownerId;
+      allow delete: if false;
+    }
+
+    // Match products
+    match /products/{productId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(productId) && isValidProduct(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && isOwner(existing().ownerId) && isValidProduct(incoming()) && incoming().ownerId == existing().ownerId;
+      allow delete: if isSignedIn() && isOwner(existing().ownerId);
+    }
+
+    // Match stock movements (Audit trail - immutable)
+    match /stockMovements/{movementId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(movementId) && isValidMovement(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if false; // Immutable audit log
+      allow delete: if false;
+    }
+
+    // Match sales
+    match /sales/{saleId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(saleId) && isValidSale(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && isOwner(existing().ownerId) && isValidSale(incoming()) && incoming().ownerId == existing().ownerId;
+      allow delete: if false; // Reversals should be recorded, not deleted
+    }
+
+    // Match purchases
+    match /purchases/{purchaseId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(purchaseId) && isValidPurchase(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && isOwner(existing().ownerId) && isValidPurchase(incoming()) && incoming().ownerId == existing().ownerId;
+      allow delete: if false;
+    }
+
+    // Match customers
+    match /customers/{customerId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(customerId) && isValidCustomer(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && isOwner(existing().ownerId) && isValidCustomer(incoming()) && incoming().ownerId == existing().ownerId;
+      allow delete: if isSignedIn() && isOwner(existing().ownerId);
+    }
+
+    // Match suppliers
+    match /suppliers/{supplierId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(supplierId) && isValidSupplier(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && isOwner(existing().ownerId) && isValidSupplier(incoming()) && incoming().ownerId == existing().ownerId;
+      allow delete: if isSignedIn() && isOwner(existing().ownerId);
+    }
+
+    // Match bkashTransactions
+    match /bkashTransactions/{trxId} {
+      allow get: if isOwner(resource.data.ownerId);
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(trxId) && isValidBkash(incoming()) && incoming().ownerId == request.auth.uid;
+      allow update: if false; // Financial audit trail is append-only
+      allow delete: if false;
+    }
+  }
+}

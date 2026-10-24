@@ -1,0 +1,18 @@
+{
+  "name": "মেসার্স কোরাইশ ট্রেডার্স",
+  "short_name": "কোরাইশ ট্রেডার্স",
+  "description": "প্রিমিয়াম সিমেন্ট ইনভেন্টরি, ব্যবসায়িক হিসাব, বিকাশ লেজার এবং বাংলা ভয়েস অ্যাসিস্ট্যান্ট",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#064e3b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

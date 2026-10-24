@@ -1,0 +1,197 @@
+{
+  "entities": {
+    "BusinessProfile": {
+      "title": "BusinessProfile",
+      "description": "Owner business profile and security configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "businessName": { "type": "string", "maxLength": 100 },
+        "ownerName": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 200 },
+        "pinHash": { "type": "string", "maxLength": 128 },
+        "pinSalt": { "type": "string", "maxLength": 64 },
+        "failedPinAttempts": { "type": "number" },
+        "lockoutUntil": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "businessName"]
+    },
+    "CementProduct": {
+      "title": "CementProduct",
+      "description": "Cement brand and bag inventory item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "brandName": { "type": "string", "maxLength": 100 },
+        "productType": { "type": "string", "maxLength": 50 },
+        "bagWeightKg": { "type": "number" },
+        "currentStock": { "type": "number" },
+        "minStockAlert": { "type": "number" },
+        "avgPurchasePrice": { "type": "number" },
+        "defaultSalePrice": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "brandName", "currentStock"]
+    },
+    "StockMovement": {
+      "title": "StockMovement",
+      "description": "Stock audit trail record for inventory additions, sales, or damage",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "productId": { "type": "string" },
+        "brandName": { "type": "string", "maxLength": 100 },
+        "type": { "type": "string", "enum": ["PURCHASE", "SALE", "OPENING", "DAMAGE", "ADJUSTMENT", "RETURN_CUSTOMER", "RETURN_SUPPLIER"] },
+        "quantity": { "type": "number" },
+        "pricePerBag": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "previousStock": { "type": "number" },
+        "newStock": { "type": "number" },
+        "referenceId": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 300 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "productId", "type", "quantity"]
+    },
+    "SaleTransaction": {
+      "title": "SaleTransaction",
+      "description": "Completed or recorded cement sale",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "invoiceNumber": { "type": "string", "maxLength": 50 },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerPhone": { "type": "string", "maxLength": 20 },
+        "totalAmount": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "netAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "dueAmount": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["CASH", "BKASH", "BANK", "CREDIT", "MIXED"] },
+        "bkashTrxId": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["COMPLETED", "REVERSED"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "invoiceNumber", "totalAmount", "paidAmount"]
+    },
+    "PurchaseTransaction": {
+      "title": "PurchaseTransaction",
+      "description": "Cement stock procurement purchase order",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "billNumber": { "type": "string", "maxLength": 50 },
+        "supplierId": { "type": "string" },
+        "supplierName": { "type": "string", "maxLength": 100 },
+        "totalAmount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "dueAmount": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "status": { "type": "string", "enum": ["COMPLETED", "REVERSED"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "billNumber", "totalAmount"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Retail, dealer, or construction customer ledger",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 200 },
+        "totalDue": { "type": "number" },
+        "totalPaid": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name", "phone"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Cement manufacturer distributor or supplier ledger",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "company": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 200 },
+        "totalPayable": { "type": "number" },
+        "totalPaid": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name"]
+    },
+    "BkashTransaction": {
+      "title": "BkashTransaction",
+      "description": "Dedicated bKash transaction and balance ledger entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "trxId": { "type": "string", "maxLength": 50 },
+        "type": { "type": "string", "enum": ["MONEY_RECEIVED", "MONEY_SENT", "CUSTOMER_PAYMENT", "SUPPLIER_PAYMENT", "CASH_OUT_CHARGE"] },
+        "amount": { "type": "number" },
+        "charge": { "type": "number" },
+        "netAmount": { "type": "number" },
+        "counterpartyName": { "type": "string", "maxLength": 100 },
+        "counterpartyPhone": { "type": "string", "maxLength": 20 },
+        "previousBalance": { "type": "number" },
+        "newBalance": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 300 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "type", "amount", "newBalance"]
+    }
+  },
+  "firestore": {
+    "/businesses/{businessId}": {
+      "schema": "BusinessProfile",
+      "description": "Business settings, profile, and owner PIN security"
+    },
+    "/products/{productId}": {
+      "schema": "CementProduct",
+      "description": "Cement products and stock quantities"
+    },
+    "/stockMovements/{movementId}": {
+      "schema": "StockMovement",
+      "description": "Audit trail for stock adjustments, sales, and purchases"
+    },
+    "/sales/{saleId}": {
+      "schema": "SaleTransaction",
+      "description": "Sale invoices and customer payments"
+    },
+    "/purchases/{purchaseId}": {
+      "schema": "PurchaseTransaction",
+      "description": "Procurement orders and supplier payments"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Customer balances and contact information"
+    },
+    "/suppliers/{supplierId}": {
+      "schema": "Supplier",
+      "description": "Supplier balances and company contact information"
+    },
+    "/bkashTransactions/{trxId}": {
+      "schema": "BkashTransaction",
+      "description": "bKash transaction entries and running balance"
+    }
+  }
+}
