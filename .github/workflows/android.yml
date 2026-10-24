@@ -10,7 +10,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
+      - run: rm -rf node_modules package-lock.json
+      - run: npm cache clean --force
+      - run: npm install --legacy-peer-deps
       - run: npm run build
       - uses: actions/setup-java@v4
         with:
