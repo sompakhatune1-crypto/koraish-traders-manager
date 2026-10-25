@@ -21,7 +21,7 @@ interface SettingsViewProps {
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenPinSetup }) => {
-  const { profile, updateProfile, removeAppPin, resetToDefaults } = useApp();
+  const { profile, updateProfile, removeAppPin, resetToDefaults, clearAllData } = useApp();
 
   const [businessName, setBusinessName] = useState(profile.businessName);
   const [ownerName, setOwnerName] = useState(profile.ownerName);
@@ -214,22 +214,32 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onOpenPinSetup }) =>
         </div>
       </div>
 
-      {/* Danger Zone: Reset Database */}
+      {/* Danger Zone: Reset Database & Clear All to 00 */}
       <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-2.5">
         <h2 className="text-sm font-bold text-rose-300 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-rose-400" />
-          <span>পরীক্ষামূলক ডাটা রিসেট (Danger Zone)</span>
+          <span>ডাটাবেস শূন্যকরণ ও রিসেট (Danger Zone)</span>
         </h2>
         <p className="text-xs text-slate-300">
-          প্রয়োজনে সমস্ত পরীক্ষামূলক টেস্ট বিক্রি ও ক্রয় রিসেট করে প্রাথমিক সিমেন্ট ব্রান্ড ক্যাটালগে ফিরে যেতে পারেন।
+          আপনার সমস্ত বিকাশ, সিমেন্ট স্টক, বিক্রয় এবং গ্রাহকের বাকি হিসাব মুছে সম্পূর্ণ ০০ (Zero) করতে নিচের বাটনে চাপ দিন।
         </p>
-        <button
-          onClick={handleReset}
-          className="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-bold text-xs rounded-xl shadow cursor-pointer flex items-center gap-1.5"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>প্রাথমিক সেটিংসে রিসেট করুন</span>
-        </button>
+        <div className="flex flex-wrap gap-2 pt-1">
+          <button
+            type="button"
+            onClick={clearAllData}
+            className="px-4 py-2 bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-bold text-xs rounded-xl shadow cursor-pointer flex items-center gap-1.5"
+          >
+            <RotateCcw className="w-4 h-4" />
+            <span>সব হিসাব ০০ (Zero) করুন</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl font-semibold border border-slate-700"
+          >
+            ডিফল্ট ক্যাটালগ রিস্টোর
+          </button>
+        </div>
       </div>
     </div>
   );

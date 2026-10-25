@@ -24,11 +24,11 @@ export const PurchasesView: React.FC = () => {
   const [supplierPhone, setSupplierPhone] = useState<string>('');
   const [cartItems, setCartItems] = useState<
     { productId: string; quantity: number; unitPrice: number }[]
-  >([{ productId: products[0]?.id || '', quantity: 100, unitPrice: products[0]?.avgPurchasePrice || 510 }]);
+  >([{ productId: products[0]?.id || '', quantity: 10, unitPrice: products[0]?.avgPurchasePrice || 510 }]);
 
-  const [transportCost, setTransportCost] = useState<number>(1500);
-  const [paidAmount, setPaidAmount] = useState<number>(50000);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('BANK');
+  const [transportCost, setTransportCost] = useState<number>(0);
+  const [paidAmount, setPaidAmount] = useState<number>(0);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('CASH');
   const [purchaseNotes, setPurchaseNotes] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');

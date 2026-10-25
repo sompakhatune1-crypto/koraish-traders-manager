@@ -15,17 +15,17 @@ import {
 } from '../types';
 import { hashPin, generateSalt, verifyAppPin, LOCKOUT_DURATION_MS } from '../utils/security';
 
-const STORAGE_KEY_PREFIX = 'koraish_traders_';
+const STORAGE_KEY_PREFIX = 'koraish_traders_v3_';
 
-// Initial Bangladesh Cement Brands Catalog
+// Initial Bangladesh Cement Brands Catalog (Zero Initial Stock)
 const INITIAL_PRODUCTS: CementProduct[] = [
   {
     id: 'prod_shah_pcc',
     brandName: 'শাহ সিমেন্ট (Shah Cement)',
     productType: 'PCC (Portland Composite)',
     bagWeightKg: 50,
-    currentStock: 420,
-    minStockAlert: 50,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 510,
     defaultSalePrice: 550,
     isActive: true,
@@ -37,8 +37,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'বসুন্ধরা সিমেন্ট (Bashundhara)',
     productType: 'PCC (Super Strong)',
     bagWeightKg: 50,
-    currentStock: 350,
-    minStockAlert: 40,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 520,
     defaultSalePrice: 560,
     isActive: true,
@@ -50,8 +50,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'ক্রাউন সিমেন্ট (Crown Cement)',
     productType: 'PCC (High Tensile)',
     bagWeightKg: 50,
-    currentStock: 280,
-    minStockAlert: 35,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 515,
     defaultSalePrice: 555,
     isActive: true,
@@ -63,8 +63,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'ফ্রেশ সিমেন্ট (Fresh Cement)',
     productType: 'PCC (High Durability)',
     bagWeightKg: 50,
-    currentStock: 190,
-    minStockAlert: 30,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 500,
     defaultSalePrice: 540,
     isActive: true,
@@ -76,8 +76,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'সেভেন রিংস সিমেন্ট (Seven Rings)',
     productType: 'PCC (Advanced Tech)',
     bagWeightKg: 50,
-    currentStock: 160,
-    minStockAlert: 30,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 525,
     defaultSalePrice: 565,
     isActive: true,
@@ -89,8 +89,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'প্রিমিয়ার সিমেন্ট (Premier Cement)',
     productType: 'PCC',
     bagWeightKg: 50,
-    currentStock: 210,
-    minStockAlert: 40,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 505,
     defaultSalePrice: 545,
     isActive: true,
@@ -102,8 +102,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'আকিজ সিমেন্ট (Akij Cement)',
     productType: 'PCC (Portland Composite)',
     bagWeightKg: 50,
-    currentStock: 140,
-    minStockAlert: 25,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 510,
     defaultSalePrice: 550,
     isActive: true,
@@ -115,8 +115,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'স্ক্যান সিমেন্ট (Scan Cement)',
     productType: 'OPC / PCC',
     bagWeightKg: 50,
-    currentStock: 75,
-    minStockAlert: 25,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 535,
     defaultSalePrice: 575,
     isActive: true,
@@ -128,7 +128,7 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'কনফিডেন্স সিমেন্ট (Confidence)',
     productType: 'PCC',
     bagWeightKg: 50,
-    currentStock: 90,
+    currentStock: 0,
     minStockAlert: 20,
     avgPurchasePrice: 495,
     defaultSalePrice: 535,
@@ -141,8 +141,8 @@ const INITIAL_PRODUCTS: CementProduct[] = [
     brandName: 'হোলসিম সিমেন্ট (Holcim Cement)',
     productType: 'PCC (Water Protect)',
     bagWeightKg: 50,
-    currentStock: 110,
-    minStockAlert: 30,
+    currentStock: 0,
+    minStockAlert: 20,
     avgPurchasePrice: 540,
     defaultSalePrice: 580,
     isActive: true,
@@ -151,120 +151,16 @@ const INITIAL_PRODUCTS: CementProduct[] = [
   },
 ];
 
-// Initial Customers
-const INITIAL_CUSTOMERS: Customer[] = [
-  {
-    id: 'cust_1',
-    name: 'রহিম বিল্ডার্স (ইঞ্জিঃ রহিম)',
-    phone: '01711223344',
-    address: 'ষ্টেশন রোড, বাজার এলাকা',
-    totalDue: 45000,
-    totalPaid: 125000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'cust_2',
-    name: 'করিম অ্যান্ড সন্স ঠিকাদার',
-    phone: '01819556677',
-    address: 'উপজেলা মোড়, মেইন রোড',
-    totalDue: 28500,
-    totalPaid: 95000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'cust_3',
-    name: 'হাজী রফিকুল ইসলাম',
-    phone: '01912334455',
-    address: 'গ্রামঃ চাঁদপুর, ডাকঘরঃ বাজার',
-    totalDue: 0,
-    totalPaid: 64000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'cust_4',
-    name: 'মেসার্স হাসান ব্রিকস ও কনস্ট্রাকশন',
-    phone: '01678990011',
-    address: 'বাইপাস সংযোগ সড়ক',
-    totalDue: 62000,
-    totalPaid: 210000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+// Initial Customers - Clean empty array
+const INITIAL_CUSTOMERS: Customer[] = [];
 
-// Initial Suppliers
-const INITIAL_SUPPLIERS: Supplier[] = [
-  {
-    id: 'supp_1',
-    name: 'মেঘনা ডিস্ট্রিবিউশন এজেন্সি',
-    company: 'মেঘনা গ্রুপ / ফ্রেশ সিমেন্ট ডিলার',
-    phone: '01733445566',
-    address: 'সদর ঘাট ডিপো',
-    totalPayable: 85000,
-    totalPaid: 450000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'supp_2',
-    name: 'শাহ সিমেন্ট সেন্ট্রাল ডিলারশিপ',
-    company: 'আবুল খায়ের গ্রুপ',
-    phone: '01844556677',
-    address: 'নদী বন্দর ঘাট',
-    totalPayable: 110000,
-    totalPaid: 680000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'supp_3',
-    name: 'বসুন্ধরা সিমেন্ট সেলস ডিপো',
-    company: 'বসুন্ধরা গ্রুপ',
-    phone: '01955667788',
-    address: 'ইন্ডাস্ট্রিয়াল জোন',
-    totalPayable: 45000,
-    totalPaid: 320000,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+// Initial Suppliers - Clean empty array
+const INITIAL_SUPPLIERS: Supplier[] = [];
 
-// Initial bKash Transactions
-const INITIAL_BKASH_TXS: BkashTransaction[] = [
-  {
-    id: 'bkash_tx_1',
-    trxId: 'BKA88192A1',
-    type: 'CUSTOMER_PAYMENT',
-    amount: 15000,
-    charge: 0,
-    netAmount: 15000,
-    counterpartyName: 'করিম অ্যান্ড সন্স',
-    counterpartyPhone: '01819556677',
-    previousBalance: 32500,
-    newBalance: 47500,
-    notes: 'সিমেন্ট বিক্রির আংশিক বিল পরিশোধ',
-    createdAt: new Date(Date.now() - 3600000 * 4).toISOString(),
-  },
-  {
-    id: 'bkash_tx_2',
-    trxId: 'BKA77459C8',
-    type: 'MONEY_RECEIVED',
-    amount: 25000,
-    charge: 0,
-    netAmount: 25000,
-    counterpartyName: 'হাজী রফিকুল ইসলাম',
-    counterpartyPhone: '01912334455',
-    previousBalance: 7500,
-    newBalance: 32500,
-    notes: '৫০ বস্তা ক্রাউন সিমেন্ট অগ্রিম বাবদ',
-    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
-  },
-];
+// Initial bKash Transactions - Clean empty array
+const INITIAL_BKASH_TXS: BkashTransaction[] = [];
 
-// Initial Business Profile
+// Initial Business Profile - 0 Initial Balance
 const INITIAL_PROFILE: BusinessProfile = {
   businessName: 'মেসার্স কোরাইশ ট্রেডার্স',
   ownerName: 'মোহাম্মদ কোরাইশ',
@@ -275,8 +171,8 @@ const INITIAL_PROFILE: BusinessProfile = {
   pinSalt: null,
   failedPinAttempts: 0,
   lockoutUntil: null,
-  initialCashBalance: 85000,
-  initialBkashBalance: 47500,
+  initialCashBalance: 0,
+  initialBkashBalance: 0,
   currency: 'BDT',
 };
 
@@ -365,6 +261,14 @@ interface AppContextType {
   exportDatabaseJson: () => string;
   importDatabaseJson: (jsonString: string) => { success: boolean; message: string };
   resetToDefaults: () => void;
+
+  // Deletions & Zero Out
+  deleteBkashTransaction: (id: string) => void;
+  deleteStockMovement: (id: string) => void;
+  deleteProduct: (id: string) => void;
+  clearAllBkash: () => void;
+  clearAllStock: () => void;
+  clearAllData: () => void;
 
   // Quick aggregates
   totalStockBags: number;
@@ -1256,6 +1160,53 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     addAudit('DATABASE_RESET', 'ডাটাবেস প্রাথমিক সেটিংসে রিসেট করা হয়েছে');
   }, [addAudit]);
 
+  const deleteBkashTransaction = useCallback((id: string) => {
+    setBkashTransactions((prev) => prev.filter((t) => t.id !== id));
+    addAudit('BKASH_DELETED', `বিকাশ লেনদেন মুছে ফেলা হয়েছে (ID: ${id})`);
+  }, [addAudit]);
+
+  const deleteStockMovement = useCallback((id: string) => {
+    setStockMovements((prev) => prev.filter((m) => m.id !== id));
+    addAudit('STOCK_MOVEMENT_DELETED', `স্টক রেকর্ড মুছে ফেলা হয়েছে`);
+  }, [addAudit]);
+
+  const deleteProduct = useCallback((id: string) => {
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+    addAudit('PRODUCT_DELETED', `পণ্য ক্যাটালগ থেকে মুছে ফেলা হয়েছে`);
+  }, [addAudit]);
+
+  const clearAllBkash = useCallback(() => {
+    if (confirm('আপনি কি নিশ্চিত যে সকল বিকাশ লেনদেন মুছে ব্যালেন্স ০০ করবেন?')) {
+      setBkashTransactions([]);
+      addAudit('ALL_BKASH_CLEARED', 'সকল বিকাশ হিসাব ০০ করা হয়েছে');
+    }
+  }, [addAudit]);
+
+  const clearAllStock = useCallback(() => {
+    if (confirm('আপনি কি নিশ্চিত যে সকল সিমেন্টের বর্তমান স্টক ০০ করবেন?')) {
+      setProducts((prev) => prev.map((p) => ({ ...p, currentStock: 0, updatedAt: new Date().toISOString() })));
+      setStockMovements([]);
+      addAudit('ALL_STOCK_CLEARED', 'সকল সিমেন্ট স্টক ০০ করা হয়েছে');
+    }
+  }, [addAudit]);
+
+  const clearAllData = useCallback(() => {
+    if (confirm('সব হিসাব ০০ করবেন? (ক্যাশ, বিকাশ, স্টক, কাস্টমার বাকি সব মুছে যাবে)')) {
+      localStorage.clear();
+      sessionStorage.clear();
+      setBkashTransactions([]);
+      setProducts((prev) => prev.map((p) => ({ ...p, currentStock: 0 })));
+      setStockMovements([]);
+      setSales([]);
+      setPurchases([]);
+      setCustomers([]);
+      setSuppliers([]);
+      setLedgerEntries([]);
+      setExpenses([]);
+      location.reload();
+    }
+  }, []);
+
   // Aggregates & KPIs
   const totalStockBags = useMemo(() => {
     return products.reduce((acc, p) => acc + (p.currentStock || 0), 0);
@@ -1273,10 +1224,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return suppliers.reduce((acc, s) => acc + (s.totalPayable || 0), 0);
   }, [suppliers]);
 
+  // Dynamically calculate bKash balance based on all transactions (never hardcoded)
   const currentBkashBalance = useMemo(() => {
-    const last = bkashTransactions[0];
-    return last ? last.newBalance : profile.initialBkashBalance;
-  }, [bkashTransactions, profile.initialBkashBalance]);
+    return bkashTransactions.reduce((sum, t) => {
+      const isIncoming = t.type === 'CUSTOMER_PAYMENT' || t.type === 'MONEY_RECEIVED';
+      const charge = t.charge || 0;
+      return isIncoming ? sum + t.amount - charge : sum - (t.amount + charge);
+    }, 0);
+  }, [bkashTransactions]);
 
   // Calculate cash balance: initial + cash sales + cash customer payments - cash purchases - cash supplier payments - cash expenses
   const currentCashBalance = useMemo(() => {
@@ -1364,6 +1319,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     exportDatabaseJson,
     importDatabaseJson,
     resetToDefaults,
+
+    deleteBkashTransaction,
+    deleteStockMovement,
+    deleteProduct,
+    clearAllBkash,
+    clearAllStock,
+    clearAllData,
 
     totalStockBags,
     totalStockValue,

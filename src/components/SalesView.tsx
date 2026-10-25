@@ -38,10 +38,10 @@ export const SalesView: React.FC<SalesViewProps> = ({ onPrintInvoice }) => {
   const [customerPhone, setCustomerPhone] = useState<string>('');
   const [cartItems, setCartItems] = useState<
     { productId: string; quantity: number; unitPrice: number }[]
-  >([{ productId: products[0]?.id || '', quantity: 20, unitPrice: products[0]?.defaultSalePrice || 550 }]);
+  >([{ productId: products[0]?.id || '', quantity: 1, unitPrice: products[0]?.defaultSalePrice || 550 }]);
 
   const [discountAmount, setDiscountAmount] = useState<number>(0);
-  const [paidAmount, setPaidAmount] = useState<number>(11000);
+  const [paidAmount, setPaidAmount] = useState<number>(0);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('CASH');
   const [bkashTrxId, setBkashTrxId] = useState<string>('');
   const [saleNotes, setSaleNotes] = useState<string>('');

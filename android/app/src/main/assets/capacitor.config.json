@@ -2,7 +2,6 @@
 	"appId": "com.messrskoraishtraders.app",
 	"appName": "মেসার্স কোরাইশ ট্রেডার্স",
 	"webDir": "dist",
-	"bundledWebRuntime": false,
 	"android": {
 		"allowMixedContent": false,
 		"captureInput": true,
